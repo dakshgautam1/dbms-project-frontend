@@ -32,107 +32,81 @@ function testWitAi() {
   });
 }
 
-const artyom = new Artyom();
 
+// Initiate the char
+function populateCityMap() {
 
-var settings = {
-  lang:"en-GB",
-  continuous:true,
-  listen:true, // Start recognizing
-  debug:true,  // Don't stop never because i have https connection
-  onResult:function(text){
-      // text = the recognized text
-      console.log(text);
-  },
-  onStart:function(){
-      console.log("Dictation started by the user");
-  },
-  onEnd:function(){
-      alert("Dictation stopped by the user");
-  }
-};
+fetch('http://localhost:5000/get-cities')
+.then(function(data) {
+  console.log(data)
+  return data.json()
+}).then(function(result) {
 
-var UserDictation = artyom.newDictation(settings);
+  let newResult = result.result.map(city => {
+    return {
+      name: city.cityName,
+      lat: city.latitude,
+      lon: city.longitude,
+      ownUrl: `http://localhost:3001/city.html?city_id=${city.cityName}`   
+    }
+  })
 
-function startRecognition(){
-UserDictation.start();
+  console.log(newResult)
+  Highcharts.mapChart('map-container', {
+
+    chart: {
+      map: 'countries/us/us-all'
+    },
+    plotOptions: {
+      series: {
+        cursor: 'pointer',
+        point: {
+          events: {
+            click: function() {
+              window.open(this.ownUrl, '_self')
+            }
+          }
+        }
+
+      }
+    },
+  
+    mapNavigation: {
+      enabled: true
+    },
+  
+    tooltip: {
+      headerFormat: '',
+      pointFormat: '<b>{point.name}</b><br>Lat: {point.lat}, Lon: {point.lon}'
+    },
+  
+    series: [{
+      // Use the gb-all map with no data as a basemap
+      name: 'Basemap',
+      borderColor: '#A0A0A0',
+      nullColor: '#f28f43',
+      showInLegend: false
+    }, {
+      name: 'Separators',
+      type: 'mapline',
+      nullColor: '#707070',
+      showInLegend: false,
+      enableMouseTracking: false
+    }, {
+      // Specify points using lat/lon
+      type: 'mappoint',
+      name: 'Cities',
+      color: Highcharts.getOptions().colors[1],
+      data: newResult
+    }]
+  });
+})
+.catch(function() {
+    // This is where you run code if the server returns any errors
+});
+
 }
 
-function stopRecognition(){
-UserDictation.stop();
-UserDictation.onResult();
-}
-
-
-
-// $.getJSON('https://cdn.rawgit.com/highcharts/highcharts/057b672172ccc6c08fe7dbb27fc17ebca3f5b770/samples/data/us-population-density.json', function (data) {
-
-//   // Make codes uppercase to match the map data
-//   $.each(data, function () {
-//     this.code = this.code.toUpperCase();
-//   });
-
-//   // Instantiate the map
-//   Highcharts.mapChart('container', {
-
-//     chart: {
-//       map: 'countries/us/us-all',
-//       borderWidth: 1
-//     },
-
-//     title: {
-//       text: 'US population density (/km²)'
-//     },
-
-//     exporting: {
-//       sourceWidth: 600,
-//       sourceHeight: 500
-//     },
-
-//     legend: {
-//       layout: 'horizontal',
-//       borderWidth: 0,
-//       backgroundColor: 'rgba(255,255,255,0.85)',
-//       floating: true,
-//       verticalAlign: 'top',
-//       y: 25
-//     },
-
-//     mapNavigation: {
-//       enabled: true
-//     },
-
-//     colorAxis: {
-//       min: 1,
-//       type: 'logarithmic',
-//       minColor: '#EEEEFF',
-//       maxColor: '#000022',
-//       stops: [
-//         [0, '#EFEFFF'],
-//         [0.67, '#4444FF'],
-//         [1, '#000022']
-//       ]
-//     },
-
-//     series: [{
-//       animation: {
-//         duration: 1000
-//       },
-//       data: data,
-//       joinBy: ['postal-code', 'code'],
-//       dataLabels: {
-//         enabled: true,
-//         color: '#FFFFFF',
-//         format: '{point.code}'
-//       },
-//       name: 'Population density',
-//       tooltip: {
-//         pointFormat: '{point.code}: {point.value}/km²'
-//       }
-//     }]
-//   });
-// });
-
-
-testApi();
-testWitAi();
+//testApi();
+//testWitAi();
+populateCityMap();

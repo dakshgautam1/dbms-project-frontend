@@ -6,3 +6,11 @@ body {
   display: flex;
   flex-direction: center;
   justify-content: center; }
+
+#map-container {
+  height: 400px; }
+
+#speak-text-box {
+  color: black;
+  height: 200px;
+  width: 300px; }
