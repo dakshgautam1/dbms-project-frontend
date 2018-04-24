@@ -47,7 +47,7 @@ fetch('http://localhost:5000/get-cities')
       name: city.cityName,
       lat: city.latitude,
       lon: city.longitude,
-      ownUrl: `http://localhost:3001/city.html?city_id=${city.cityName}`   
+      ownUrl: `http://localhost:3000/city.html?city_id=${city.cityName}`   
     }
   })
 

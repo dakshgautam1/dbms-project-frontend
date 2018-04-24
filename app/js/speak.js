@@ -1,18 +1,5 @@
 var baseUrl = "http://localhost:5000"
 const artyom = new Artyom();
-// artyom.initialize({   lang: "en-GB", // GreatBritain english   continuous:
-// true, // Listen forever   soundex: true,// Use the soundex algorithm to
-// increase accuracy   debug: true, // Show messages in the console
-// executionKeyword: "and do it now",   listen: true, // Start to listen
-// commands !   onResult:function(text){     // text = the recognized text
-// console.log(text);     $('textarea#speak-text-box').text(text); },
-// onStart:function(){     console.log("Dictation started by the user"); },
-// onEnd:function(){     alert("Dictation stopped by the user"); },   // If
-// providen, you can only trigger a command if you say its name   // e.g to
-// trigger Good Morning, you need to say "Jarvis Good Morning"   name: "Jarvis"
-// }).then(() => {   console.log("Artyom has been succesfully initialized");
-// }).catch((err) => {   console.error("Artyom couldn't be initialized: ", err);
-// });
 
 artyom.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google UK English Male", "en-GB", "en_GB"];
 
@@ -118,106 +105,195 @@ function searchText() {
 function generateMap(results) {
   console.log('in high charts', results);
 
-  var data = results.result.data;
-  var title = results.result.title;
-  var seriesTitle = results.result.seriesTitle;
-  
-  var xAxisName = results.result.xAxisName;
-  var yAxisName = results.result.yAxisName;
-  var unit = results.result.unit;
-  
-  console.log(results)
+  var graphType = results.graphtype;
 
-  Highcharts.chart('search-graph-container', {
-    chart: {
-      type: 'spline'
+  if (graphType === 1) {
+    var data = results.result.data;
+    var unit = results.result.unit;
+
+    var title = results.result.title;
+    var seriesTitle = results.result.seriesTitle;
+    
+    var xAxisName = results.result.xAxisName;
+    var yAxisName = results.result.yAxisName;
+    
+    Highcharts.chart('search-graph-container', {
+      chart: {
+        type: 'spline'
+      },
+      title: {
+        text: title
+      },
+      subtitle: {
+        text: 'Search So Far.'
+      },
+      xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { // don't display the dummy year
+        month: '%Y-%m',
+      },
+        title: {
+          text: xAxisName
+        }
+      },
+      yAxis: {
+        title: {
+          text: yAxisName
+        },
+        min: 0
+      },
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} ' + unit
+      },
+    
+      plotOptions: {
+        spline: {
+          marker: {
+            enabled: true
+          }
+        }
+      },
+    
+      colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+    
+      series: [{
+        name: title,
+        data: data
+      }]
+    });
+  } else if (graphType === 2) {
+    console.log('yo')
+var unit = results.result.unit;
+
+var title = results.result.title;
+var seriesTitle = results.result.seriesTitle;
+
+var xAxisName = results.result.xAxisName;
+var yAxisName = results.result.yAxisName;
+
+var data1 = results.result.data1;
+var data2 = results.result.data2;
+var name1 = results.result.name1;
+var name2 = results.result.name2;
+
+Highcharts.chart('search-graph-container', {
+  chart: {
+    type: 'spline'
+  },
+  title: {
+    text: title
+  },
+  subtitle: {
+    text: 'Search So Far.'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+    month: '%Y-%m',
     },
     title: {
-      text: title
+      text: xAxisName
+    }
+  },
+  yAxis: {
+    title: {
+      text: yAxisName
     },
-    subtitle: {
-      text: 'Search So Far.'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-    },
-      title: {
-        text: xAxisName
-      }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} ' + unit
-    },
-  
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
-  
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-  
-    series: [{
-      name: title,
-      data: data
-    }]
-  });
+    min: 0
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} ' + unit
+  },
 
-  
-  Highcharts.chart('1search-graph-container', {
-    chart: {
-      type: 'spline'
+  plotOptions: {
+    spline: {
+      marker: {
+        enabled: true
+      }
+    }
+  },
+
+  colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+  // Define the data points. All series have a dummy year
+  // of 1970/71 in order to be compared on the same x axis. Note
+  // that in JavaScript, months start at 0 for January, 1 for February etc.
+  series:[{
+    name: name1,
+    data: data1
+  }, {
+    name: name2,
+    data: data2
+  }]
+});
+  } else if (graphType === 3) {
+
+var title = results.result.title;
+var xAxisName = results.result.xAxisName;
+var yAxisName = results.result.yAxisName;
+var data1 = results.result.data1;
+var data2 = results.result.data2;
+var name1 = results.result.name1;
+var name2 = results.result.name2;
+
+console.log(data1)
+Highcharts.chart('search-graph-container', {
+  chart: {
+    type: 'spline'
+  },
+  title: {
+    text: title
+  },
+  subtitle: {
+    text: 'Search So Far.'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+    month: '%Y-%m',
     },
     title: {
-      text: title
+      text: xAxisName
+    }
+  },
+  yAxis: {
+    title: {
+      text: yAxisName
     },
-    subtitle: {
-      text: 'Search So Far.'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-    },
-      title: {
-        text: xAxisName
+    min: 0
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} '
+  },
+
+  plotOptions: {
+    spline: {
+      marker: {
+        enabled: true
       }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} ' + unit
-    },
+    }
+  },
+
+  colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+  // Define the data points. All series have a dummy year
+  // of 1970/71 in order to be compared on the same x axis. Note
+  // that in JavaScript, months start at 0 for January, 1 for February etc.
+  series:[{
+    name: name1,
+    data: data1
+  }, {
+    name: name2,
+    data: data2
+  }]
+});
+
+  }
   
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
+
   
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
   
-    series: [{
-      name: title,
-      data: data
-    }]
-  });
 }
