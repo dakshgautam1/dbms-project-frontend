@@ -84,15 +84,24 @@
  
             <input type="text" id="year-min" class="form-control" placeholder="Year Min" value="">
             <input type="text" id="year-max" class="form-control" placeholder="Year Max" >
-          <button class="btn btn-default">Update</button>
+
+            <div id="slider"></div>
+
+          <button class="btn btn-default" onclick="h1()">Update</button>
         </div>
 
         <div id="graph-ctn">
+        </div>
+        <div id="graph-ctn-a">
           </div>
+          <div id="graph-ctn-b">
+            </div>
+            <div id="graph-ctn-c">
+              </div>
           <br>
           <br>
           <div id="graph-ctn1">
-            </div>
+          </div>
     </div>
   </div>
 </div>
@@ -424,5 +433,12 @@
 <script src="js/highcharts/Highcharts-6.1.0/code/highcharts.js"></script>
 
 <script type="text/javascript" src="js/city.js"></script>
+
+<script src="js/jQRangeSlider-5.7.2/jQDateRangeSlider-min.js"></script>
+<script>
+//<!--
+  $("#slider").dateRangeSlider();
+//-->
+</script>
 </body>
 </html>
