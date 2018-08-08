@@ -1,4 +1,4 @@
-var baseUrl = "http://localhost:5000/";
+var baseUrl = "http://localhost:5000";
 var getUrlParameter = function getUrlParameter(sParam) {
   var sPageURL = decodeURIComponent(window.location.search.substring(1)),
     sURLVariables = sPageURL.split("&"),
@@ -15,8 +15,16 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 var city_name = getUrlParameter("city_id");
+//var city_name = 'Los Angeles';
 var res = city_name.split(" ");
 var photoCityName = res.join("");
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1;
+var yyyy = today.getFullYear();
+
+var todayDate = mm + '/' + dd + '/' + yyyy;
 
 console.log(photoCityName);
 $("#intro").css(
@@ -31,10 +39,8 @@ $("#services").css(
 
 $("#page-head-city-name").text(city_name);
 
-var baseUrl = "http://localhost:5000";
-
-function getPollutants(data) {
-  return fetch(baseUrl + "/test1", {
+function getCityWeather(data) {
+  return fetch(baseUrl + "/get-city-weather", {
     body: JSON.stringify(data),
     cache: "no-cache",
     credentials: "same-origin",
@@ -48,536 +54,300 @@ function getPollutants(data) {
   })
     .then(response => response.json())
     .then(response => {
-      return generateMap(response);
+      return generateWeather(response);
     })
     .catch(function(error) {
       console.log("Request failure: ", error);
     });
 }
 
-function generateMap(results) {
+function getCityPollution(data) {
+  return fetch(baseUrl + "/get-city-pollution", {
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "content-type": "application/json"
+    },
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer"
+  })
+    .then(response => response.json())
+    .then(response => {
+      return generatePollution(response);
+    })
+    .catch(function(error) {
+      console.log("Request failure: ", error);
+    });
+}
+
+function getHot(data) {
+  return fetch(baseUrl + "/get-hottest", {
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "content-type": "application/json"
+    },
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer"
+  })
+    .then(response => response.json())
+    .then(response => {
+      return generateHottest(response);
+    })
+    .catch(function(error) {
+      console.log("Request failure: ", error);
+    });
+}
+
+function getCold(data) {
+  return fetch(baseUrl + "/get-coldest", {
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "content-type": "application/json"
+    },
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer"
+  })
+    .then(response => response.json())
+    .then(response => {
+      return generateColdest(response);
+    })
+    .catch(function(error) {
+      console.log("Request failure: ", error);
+    });
+}
+
+function getDry(data) {
+  return fetch(baseUrl + "/get-dry", {
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "content-type": "application/json"
+    },
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer"
+  })
+    .then(response => response.json())
+    .then(response => {
+      return generateDry(response);
+    })
+    .catch(function(error) {
+      console.log("Request failure: ", error);
+    });
+}
+
+function getWind(data) {
+  return fetch(baseUrl + "/get-wind", {
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "content-type": "application/json"
+    },
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer"
+  })
+    .then(response => response.json())
+    .then(response => {
+      return generateWind(response);
+    })
+    .catch(function(error) {
+      console.log("Request failure: ", error);
+    });
+}
+
+function generateHottest(results) {
+  $('#hot-date').text(results.result.hot_date);
+  $('#hot-val').text(results.result.hot_val);
+}
+
+function generateColdest(results) {
+  $('#cold-date').text(results.result.cold_date);
+  $('#cold-val').text(results.result.cold_val);
+}
+
+function generateDry(results) {
+  $('#dry-date').text(results.result.dry_date);
+  $('#dry-val').text(results.result.dry_val);
+}
+
+function generateWind(results) {
+  $('#wind-date').text(results.result.wind_date);
+  $('#wind-val').text(results.result.wind_val);
+}
+
+function generateWeather(results) {
   console.log(results);
 
-  Highcharts.createElement(
-    "link",
-    {
-      href: "https://fonts.googleapis.com/css?family=Unica+One",
-      rel: "stylesheet",
-      type: "text/css"
-    },
-    null,
-    document.getElementsByTagName("head")[0]
-  );
+  $('#history-title').text('This Day in History - ' + city_name + ': ' + todayDate );
 
-  // Highcharts.theme = {
-  //   colors: [
-  //     "#2b908f",
-  //     "#90ee7e",
-  //     "#f45b5b",
-  //     "#7798BF",
-  //     "#aaeeee",
-  //     "#ff0066",
-  //     "#eeaaee",
-  //     "#55BF3B",
-  //     "#DF5353",
-  //     "#7798BF",
-  //     "#aaeeee"
-  //   ],
-  //   chart: {
-  //     backgroundColor: {
-  //       linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
-  //       stops: [[0, "#2a2a2b"], [1, "#3e3e40"]]
-  //     },
-  //     style: {
-  //       fontFamily: "'Unica One', sans-serif"
-  //     },
-  //     plotBorderColor: "#606063"
-  //   },
-  //   title: {
-  //     style: {
-  //       color: "#E0E0E3",
-  //       textTransform: "uppercase",
-  //       fontSize: "20px"
-  //     }
-  //   },
-  //   subtitle: {
-  //     style: {
-  //       color: "#E0E0E3",
-  //       textTransform: "uppercase"
-  //     }
-  //   },
-  //   xAxis: {
-  //     gridLineColor: "#707073",
-  //     labels: {
-  //       style: {
-  //         color: "#E0E0E3"
-  //       }
-  //     },
-  //     lineColor: "#707073",
-  //     minorGridLineColor: "#505053",
-  //     tickColor: "#707073",
-  //     title: {
-  //       style: {
-  //         color: "#A0A0A3"
-  //       }
-  //     }
-  //   },
-  //   yAxis: {
-  //     gridLineColor: "#707073",
-  //     labels: {
-  //       style: {
-  //         color: "#E0E0E3"
-  //       }
-  //     },
-  //     lineColor: "#707073",
-  //     minorGridLineColor: "#505053",
-  //     tickColor: "#707073",
-  //     tickWidth: 1,
-  //     title: {
-  //       style: {
-  //         color: "#A0A0A3"
-  //       }
-  //     }
-  //   },
-  //   tooltip: {
-  //     backgroundColor: "rgba(0, 0, 0, 0.85)",
-  //     style: {
-  //       color: "#F0F0F0"
-  //     }
-  //   },
-  //   plotOptions: {
-  //     series: {
-  //       dataLabels: {
-  //         color: "#B0B0B3"
-  //       },
-  //       marker: {
-  //         lineColor: "#333"
-  //       }
-  //     },
-  //     boxplot: {
-  //       fillColor: "#505053"
-  //     },
-  //     candlestick: {
-  //       lineColor: "white"
-  //     },
-  //     errorbar: {
-  //       color: "white"
-  //     }
-  //   },
-  //   legend: {
-  //     itemStyle: {
-  //       color: "#E0E0E3"
-  //     },
-  //     itemHoverStyle: {
-  //       color: "#FFF"
-  //     },
-  //     itemHiddenStyle: {
-  //       color: "#606063"
-  //     }
-  //   },
-  //   credits: {
-  //     style: {
-  //       color: "#666"
-  //     }
-  //   },
-  //   labels: {
-  //     style: {
-  //       color: "#707073"
-  //     }
-  //   },
+  $('#13-temp').text(results.result.temp_13);
+  $('#14-temp').text(results.result.temp_14);
+  $('#15-temp').text(results.result.temp_15);
 
-  //   drilldown: {
-  //     activeAxisLabelStyle: {
-  //       color: "#F0F0F3"
-  //     },
-  //     activeDataLabelStyle: {
-  //       color: "#F0F0F3"
-  //     }
-  //   },
+  $('#13-humi').text(results.result.humi_13);
+  $('#14-humi').text(results.result.humi_14);
+  $('#15-humi').text(results.result.humi_15);
 
-  //   navigation: {
-  //     buttonOptions: {
-  //       symbolStroke: "#DDDDDD",
-  //       theme: {
-  //         fill: "#505053"
-  //       }
-  //     }
-  //   },
+  $('#13-pres').text(results.result.pres_13);
+  $('#14-pres').text(results.result.pres_14);
+  $('#15-pres').text(results.result.pres_15);
 
-  //   // scroll charts
-  //   rangeSelector: {
-  //     buttonTheme: {
-  //       fill: "#505053",
-  //       stroke: "#000000",
-  //       style: {
-  //         color: "#CCC"
-  //       },
-  //       states: {
-  //         hover: {
-  //           fill: "#707073",
-  //           stroke: "#000000",
-  //           style: {
-  //             color: "white"
-  //           }
-  //         },
-  //         select: {
-  //           fill: "#000003",
-  //           stroke: "#000000",
-  //           style: {
-  //             color: "white"
-  //           }
-  //         }
-  //       }
-  //     },
-  //     inputBoxBorderColor: "#505053",
-  //     inputStyle: {
-  //       backgroundColor: "#333",
-  //       color: "silver"
-  //     },
-  //     labelStyle: {
-  //       color: "silver"
-  //     }
-  //   },
+  $('#13-spe').text(results.result.spe_13);
+  $('#14-spe').text(results.result.spe_14);
+  $('#15-spe').text(results.result.spe_15);
 
-  //   navigator: {
-  //     handles: {
-  //       backgroundColor: "#666",
-  //       borderColor: "#AAA"
-  //     },
-  //     outlineColor: "#CCC",
-  //     maskFill: "rgba(255,255,255,0.1)",
-  //     series: {
-  //       color: "#7798BF",
-  //       lineColor: "#A6C7ED"
-  //     },
-  //     xAxis: {
-  //       gridLineColor: "#505053"
-  //     }
-  //   },
+  $('#13-direc').text(getDirection(results.result.direc_13));
+  $('#14-direc').text(getDirection(results.result.direc_14));
+  $('#15-direc').text(getDirection(results.result.direc_15));
 
-  //   scrollbar: {
-  //     barBackgroundColor: "#808083",
-  //     barBorderColor: "#808083",
-  //     buttonArrowColor: "#CCC",
-  //     buttonBackgroundColor: "#606063",
-  //     buttonBorderColor: "#606063",
-  //     rifleColor: "#FFF",
-  //     trackBackgroundColor: "#404043",
-  //     trackBorderColor: "#404043"
-  //   },
+}
 
-  //   // special colors for some of the
-  //   legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
-  //   background2: "#505053",
-  //   dataLabelsColor: "#B0B0B3",
-  //   textColor: "#C0C0C0",
-  //   contrastTextColor: "#F0F0F3",
-  //   maskColor: "rgba(255,255,255,0.3)"
-  // };
+function generatePollution(results) {
+  console.log(results);
 
-  // // Apply the theme
-  // Highcharts.setOptions(Highcharts.theme);
+  $('#co_mean13').text(results.result.co_avg_13);
+  $('#co_max13').text(results.result.co_max_13);
+  $('#co_aqi13').text(results.result.co_aqi_13);
+  $('#no2_mean13').text(results.result.no2_avg_13);
+  $('#no2_max13').text(results.result.no2_max_13);
+  $('#no2_aqi13').text(results.result.no2_aqi_13);
+  $('#o3_mean13').text(results.result.o3_avg_13);
+  $('#o3_max13').text(results.result.o3_max_13);
+  $('#o3_aqi13').text(results.result.o3_aqi_13);
+  $('#so2_mean13').text(results.result.so2_avg_13);
+  $('#so2_max13').text(results.result.so2_max_13);
+  $('#so2_aqi13').text(results.result.so2_aqi_13);
 
-var title = results.result.title;
-var xAxisName = results.result.xAxisName;
-var yAxisName = results.result.yAxisName;
-var data1 = results.result.data1;
-var data2 = results.result.data2;
-var data3 = results.result.data3;
-var data4 = results.result.data4;
-var data5 = results.result.data5;
-var data6 = results.result.data6;
-var data7 = results.result.data7;
-var data8 = results.result.data8;
-var data9 = results.result.data9;
-var data10 = results.result.data10;
-var data11 = results.result.data11;
-var data12 = results.result.data12;
-var data13 = results.result.data13;
-var data14 = results.result.data14;
-var data15 = results.result.data15;
-var data16 = results.result.data16;
+  $('#co_mean14').text(results.result.co_avg_14);
+  $('#co_max14').text(results.result.co_max_14);
+  $('#co_aqi14').text(results.result.co_aqi_14);
+  $('#no2_mean14').text(results.result.no2_avg_14);
+  $('#no2_max14').text(results.result.no2_max_14);
+  $('#no2_aqi14').text(results.result.no2_aqi_14);
+  $('#o3_mean14').text(results.result.o3_avg_14);
+  $('#o3_max14').text(results.result.o3_max_14);
+  $('#o3_aqi14').text(results.result.o3_aqi_14);
+  $('#so2_mean14').text(results.result.so2_avg_14);
+  $('#so2_max14').text(results.result.so2_max_14);
+  $('#so2_aqi14').text(results.result.so2_aqi_14);
 
+  $('#co_mean15').text(results.result.co_avg_15);
+  $('#co_max15').text(results.result.co_max_15);
+  $('#co_aqi15').text(results.result.co_aqi_15);
+  $('#no2_mean15').text(results.result.no2_avg_15);
+  $('#no2_max15').text(results.result.no2_max_15);
+  $('#no2_aqi15').text(results.result.no2_aqi_15);
+  $('#o3_mean15').text(results.result.o3_avg_15);
+  $('#o3_max15').text(results.result.o3_max_15);
+  $('#o3_aqi15').text(results.result.o3_aqi_15);
+  $('#so2_mean15').text(results.result.so2_avg_15);
+  $('#so2_max15').text(results.result.so2_max_15);
+  $('#so2_aqi15').text(results.result.so2_aqi_15);
 
-var name1 = results.result.name1;
-var name2 = results.result.name2;
-var name3 = results.result.name3;
-var name4 = results.result.name4;
+}
 
-  var highChart1 = Highcharts.chart('graph-ctn', {
-    chart: {
-      type: 'spline'
-    },
-    title: {
-      text: title
-    },
-    subtitle: {
-      text: 'Mean Value'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-      },
-      title: {
-        text: xAxisName
-      }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} '
-    },
-  
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
-  
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-  
-    // Define the data points. All series have a dummy year
-    // of 1970/71 in order to be compared on the same x axis. Note
-    // that in JavaScript, months start at 0 for January, 1 for February etc.
-    series:[{
-      name: name1,
-      data: data1
-    }, {
-      name: name2,
-      data: data5
-    },
-    {
-      name: name3,
-      data: data9
-    },
-    {
-      name: name4,
-      data: data13
-    }]
-  });
-  var highChart2 = Highcharts.chart('graph-ctn-a', {
-    chart: {
-      type: 'spline'
-    },
-    title: {
-      text: title
-    },
-    subtitle: {
-      text: 'Max Hour'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-      },
-      title: {
-        text: xAxisName
-      }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} '
-    },
-  
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
-  
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-  
-    // Define the data points. All series have a dummy year
-    // of 1970/71 in order to be compared on the same x axis. Note
-    // that in JavaScript, months start at 0 for January, 1 for February etc.
-    series:[{
-      name: name1,
-      data: data2
-    }, {
-      name: name2,
-      data: data6
-    },
-    {
-      name: name3,
-      data: data10
-    },
-    {
-      name: name4,
-      data: data14
-    }]
-  });
-  var highChart3 = Highcharts.chart('graph-ctn-c', {
-    chart: {
-      type: 'spline'
-    },
-    title: {
-      text: title
-    },
-    subtitle: {
-      text: 'Max Hour'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-      },
-      title: {
-        text: xAxisName
-      }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} '
-    },
-  
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
-  
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-  
-    // Define the data points. All series have a dummy year
-    // of 1970/71 in order to be compared on the same x axis. Note
-    // that in JavaScript, months start at 0 for January, 1 for February etc.
-    series:[{
-      name: name1,
-      data: data4
-    }, {
-      name: name2,
-      data: data8
-    },
-    {
-      name: name3,
-      data: data12
-    },
-    {
-      name: name4,
-      data: data16
-    }]
-  });
-  var highChart4 = Highcharts.chart('graph-ctn-b', {
-    chart: {
-      type: 'spline'
-    },
-    title: {
-      text: title
-    },
-    subtitle: {
-      text: 'AQI'
-    },
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: { // don't display the dummy year
-      month: '%Y-%m',
-      },
-      title: {
-        text: xAxisName
-      }
-    },
-    yAxis: {
-      title: {
-        text: yAxisName
-      },
-      min: 0
-    },
-    tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%e. %b %Y}: {point.y:.2f} '
-    },
-  
-    plotOptions: {
-      spline: {
-        marker: {
-          enabled: true
-        }
-      }
-    },
-  
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-  
-    // Define the data points. All series have a dummy year
-    // of 1970/71 in order to be compared on the same x axis. Note
-    // that in JavaScript, months start at 0 for January, 1 for February etc.
-    series:[{
-      name: name1,
-      data: data3
-    }, {
-      name: name2,
-      data: data7
-    },
-    {
-      name: name3,
-      data: data11
-    },
-    {
-      name: name4,
-      data: data15
-    }]
-  });
+function getDirection(angle) {
 
+  var directions = 16;
+        
+    var degree = 360 / directions;
+    angle = angle + degree/2;
+        
+    if (angle >= 0 * degree && angle < 1 * degree)
+      return "N";
+    if (angle >= 1 * degree && angle < 2 * degree)
+      return "NNE";
+    if (angle >= 2 * degree && angle < 3 * degree)
+      return "NE";
+    if (angle >= 3 * degree && angle < 4 * degree)
+      return "E";
+    if (angle >= 4 * degree && angle < 5 * degree)
+      return "ESE";
+    if (angle >= 5 * degree && angle < 6 * degree)
+      return "SE";
+    if (angle >= 6 * degree && angle < 7 * degree)
+      return "SSE";
+    if (angle >= 7 * degree && angle < 8 * degree)
+      return "S";
+    if (angle >= 8 * degree && angle < 9 * degree)
+      return "SSW";
+    if (angle >= 9 * degree && angle < 10 * degree)
+      return "SW";
+    if (angle >= 10 * degree && angle < 11 * degree)
+      return "WSW";
+    if (angle >= 11 * degree && angle < 12 * degree)
+      return "W";
+    if (angle >= 12 * degree && angle < 13 * degree)
+      return "WNW";
+    if (angle >= 13 * degree && angle < 14 * degree)
+      return "NW";
+    if (angle >= 14 * degree && angle < 15 * degree)
+      return "NNW";
+    if (angle >= 15 * degree && angle < 16 * degree)
+      return "N";
 
-  return {
-    "chart1": highChart1,
-    "chart2": highChart2,
-    "chart3": highChart3,
-    "chart4": highChart4
-  }
+    //Should never happen: 
+    return "ERROR";
+
 }
 
 function h1() {
-  var get_start_date = document.getElementById("year-min").value;
-  var get_end_date = document.getElementById("year-max").value;
-  console.log(typeof(get_start_date) === 'string')
-  getPollutants({
-    "city_name": city_name,
-    "start_date": get_start_date || "02/28/2013",
-    "end_date": get_end_date || "02/28/2017"
+
+  console.log(typeof(get_start_date) === 'string');
+
+  getCityWeather({
+    "city_name": city_name
+  }).then(result => {
+    console.log(result);
+  });
+
+  getCityPollution({
+    "city_name": city_name
+  }).then(result => {
+    console.log(result);
+  });
+
+  getHot({
+    "city_name": city_name
+  }).then(result => {
+    console.log(result);
+  });
+
+  getCold({
+    "city_name": city_name
   }).then(result => {
     console.log(result)
   });
+
+  getDry({
+    "city_name": city_name
+  }).then(result => {  
+    console.log(result)
+  });
+
+  getWind({
+    "city_name": city_name
+  }).then(result => {
+    console.log(result)
+  });
+
+  
 }
 
 h1();
-
-$( function() {
-  $( "#slider-range" ).slider({
-    range: true,
-    min: 0,
-    max: 500,
-    values: [ 75, 300 ],
-    slide: function( event, ui ) {
-      $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-    }
-  });
-  $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-    " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-} );
-
-document.getElementById("year-min").value = '02/28/2013';
-document.getElementById("year-max").value = '02/28/2017';

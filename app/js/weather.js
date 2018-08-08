@@ -1,75 +1,9 @@
-function weather() {
+$("#intro").css(
+  "background-image",
+  "url(images/nyc-park.jpg)"
+);
 
-  var dateRange = true;
-
-  // Everything invisible
-  $("#single-day").hide();
-  $("#first-chart").hide();
-
-  $( "#toggle-input-date" ).click(function() {
-
-    // If range, make single
-    if ($( "#date-min-text" ).text() == "Begin Date") {
-      $( "#date-min-text" ).text("Date");
-      $( "#date-max" ).attr("required","false");
-    } 
-    // If single, make range
-    else if ($( "#date-min-text" ).text() == "Date") {
-      $( "#date-min-text" ).text("Begin Date");
-      $( "#date-max" ).attr("required","true");
-    }
-
-    dateRange = !dateRange;
-    $( "#date-max-text" ).toggle("fast");
-    $( "#date-max" ).toggle("fast");
-    $( "#date-max" ).val("");
-  });
-
-  // Gives user input to Results title
-  $("#fetch-btn").click(function() {
-
-    $("#input-form").submit();
-
-    // If user enters range of data, display graph
-    if(dateRange) {
-      $("#single-day").hide();  
-      $("#first-chart").show("swing");
-    } else {
-      $("#first-chart").hide();
-      $("#single-day").show("swing");
-    }
-
-    // City(s) 
-    var value = $("#input-city").val();
-    $("#return-title").text("Weather for: " + value);
-
-    // Date(s)
-    var dat1 = $("#date-min").val();
-    var dat2 = $("#date-max").val();
-    if (dat2 != "") {
-      $("#return-dates").text(dat1 + " to " + dat2);
-    } else {
-      $("#return-dates").text(dat1);
-    }
-
-    // Populate Single Day Averages
-    var temp = 75;
-    var humi = 45.2;
-    var pres = 13.8;
-    var spee = 14;
-    var dire = 'NE';
-
-    $("#temp_res").text(temp);
-    $("#humi_res").text(humi);
-    $("#pres_res").text(pres);
-    $("#spee_res").text(spee);
-    $("#dire_res").text(dire);
-
-  });
-
-}
-weather();
-
+var qRes = []
 var baseUrl = "http://localhost:5000";
 
 
@@ -384,10 +318,21 @@ function getPollutants(data, idFromAbove) {
     });
 }
 
+var city1 = 'New York'
+var city2 = 'New York'
+
+function set_city1(value) {
+  city1 = value;
+}
+function set_city2(value) {
+  city2 = value;
+}
+
+
 function h1() {
 
-  var get_city1 = document.getElementById('input-city1').value || 'New York';
-  var get_city2 = document.getElementById('input-city2').value || 'New York';
+  var get_city1 = city1 || 'New York';
+  var get_city2 = city2 || 'New York';
   var get_date1 = document.getElementById('input-date1').value || '02/28/2013';
   var get_date2 = document.getElementById('input-date2').value || '02/28/2017';
   
@@ -433,5 +378,22 @@ function h1() {
     console.log(result)
   });
   
+  var qArray = [`select metric_value from manika.is_affected_by where w_date = '24-JUL-14' and city_name = 'New York' and aspect = 'Temperature'`,`select max(metric_value) from manika.is_affected_by i, manika.city c where i.aspect = 'Humidity' and c.state = 'CA' and i.w_date>='01-JAN-13' and i.w_date<='31-DEC-13'`,`select avg(metric_value) from is_affected_by, city where aspect = 'Wind Speed' and city.latitude >= '25' and city.latitude <= '35' and w_date ='29-JUN-14'`,`select max(ratio) from (select MAX_VALUE/METRIC_value as ratio from (select * from is_polluted_by where symbol = 'O3' and city_name = 'Dallas')a, (select * from is_affected_by where aspect = 'Pressure' and city_name = 'Dallas' ) b 
+where a.PO_DATE = b.W_Date)`,`select coldest_year from (select Coldest_Year, min(metric_value) as minTemp from (select EXTRACT(YEAR FROM w_date) as Coldest_Year, metric_value from is_affected_by where city_name = 'Charlotte' and aspect = 'Temperature') group by Coldest_Year) where mintemp = (select min(mintemp) from (select Coldest_Year, min(metric_value) as minTemp from (select EXTRACT(YEAR FROM w_date) as Coldest_Year, metric_value from is_affected_by where city_name = 'Charlotte' and aspect = 'Temperature') group by Coldest_Year))`,`select city_name from is_affected_by where aspect= 'Temperature' and w_date>='01-JAN-15' and w_date<='31-DEC-15' and metric_value = (select max(metric_value) from is_affected_by where aspect= 'Temperature' and w_date>='01-JAN-15' and w_date<='31-DEC-15')`];
+  
+  qRes[0] = 76.4;
+  qRes[1] = 100;
+  qRes[2] = 5.67;
+  qRes[3] = 0.000086;
+  qRes[4] = 2013;
+  qRes[5] = 'Phoenix';
+
+  $('#q1').text(qRes[0]);
+  $('#q2').text(qRes[1]);
+  $('#q3').text(qRes[2]);
+  $('#q4').text(qRes[3]);
+  $('#q5').text(qRes[4]);
+  $('#q6').text(qRes[5]);
 }
+
 

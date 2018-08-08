@@ -1,5 +1,33 @@
 var baseUrl = "http://localhost:5000"
+
+var textArray = [
+  "Compare humidity and temperature in San Francisco ?",
+  "What do you know about pressure and wind speed for New York ?",
+  "Can you tell me about the Wind Speed in Chicago in the month of July ?",
+  "Plot a graph between Portland's humidity and pressure ?"
+];
+var index = 0;
+setInterval(function(){        
+$("#sub-head-q").animate({
+opacity:0
+},function()
+{
+   if(textArray.length > index) {
+   $(this).text(textArray[index]).animate({opacity:1})
+   index++; 
+   }
+   else
+   index = 0;
+});
+},3000);
+
+$("#intro").css(
+  "background-image",
+  "url(images/earth.jpg)"
+);
+
 const artyom = new Artyom();
+
 
 artyom.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google UK English Male", "en-GB", "en_GB"];
 

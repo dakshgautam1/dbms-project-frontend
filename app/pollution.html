@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Earth In Numbers</title>
+  <title>The US In Numbers</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -34,6 +34,7 @@
     <div id="status">
       <img src="images/preloader.gif" height="64" width="64" alt=""> </div>
   </div>
+  <!-- Navigation -->
   <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -50,13 +51,14 @@
             <li> <a class="page-scroll" href="pollution.html">Pollution</a> </li>
             <li> <a class="page-scroll" href="events.html">Wildfires</a> </li>
             <li> <a class="page-scroll" href="speak.html">Speak</a> </li>
-            <li> <a class="page-scroll" href="http://localhost:3002/">Admin</a> </li>
+            <li> <a class="page-scroll" href="admin.html">Admin</a> </li>
           </ul>
         </div>
         <!-- /.navbar-collapse --> 
       </div>
       <!-- /.container --> 
     </nav>
+  
 
   <!-- Header -->
   <div id="intro">
@@ -64,27 +66,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <h1>Hi,
-              <span class="brand-heading"> Ask Me Anything .</span>
-            </h1>
-            <p class="intro-text" id="sub-head-q">
-              How are you today ? Here are some questions for you. 
-            </p>
-
-            <div class="text-box-ctn">
-              <div>
-                <input class="btn btn-default" type="button" onclick="startRecognition();" value="Start" />
-                <input class="btn btn-default" type="button" onclick="stopRecognition();" value="Stop" />
-              </div>
-              <br>
-              <textarea id="speak-text-box"></textarea>
-            </div>
-            <br>
-
-            <input class="btn btn-default" type="button" onclick="searchText();" value="Search Result" />
-
+            <h1 id="page-head-city-name" class="brand-heading">Pollution</h1>
+            <p class="intro-text">Examine the presence of common air pollutants that are present in the US.</p>
+            <a href="#about" class="btn btn-default page-scroll">Learn More</a>
           </div>
-
         </div>
       </div>
     </div>
@@ -93,24 +78,104 @@
   <div id="about">
     <div class="container">
       <div class="section-title text-center center">
-        <h2>Your Result</h2>
+        <h2>Graphs</h2>
         <hr>
       </div>
       <div class="row">
-        <div id="search-graph-container">
+        <div class="input-box-wrapper">
+          <div class="dropdown-ctn">
+            <select onchange="set_city(this.value)">
+              <option value="Denver">Denver</option>
+              <option value="St. Louis">St. Louis</option>
+              <option value="Portland">Portland</option>
+              <option value="Dallas">Dallas</option>
+              <option value="Pittsburgh">Pittsburgh</option>
+              <option value="New York" selected="selected"> New York</option>
+              <option value="Philadelphia">Philadelphia</option>
+              <option value="Los Angeles">Los Angeles</option>
+              <option value="Phoenix">Phoenix</option>
+              <option value="Boston">Boston</option>
+              <option value="Charlotte">Charlotte</option>
+              <option value="Houston">Houston</option>
+            </select>
+          </div>
+          <div class="input-box-ctn">
+            <div class="input-box-dg">
+              <input type="text" id="year-min" class="form-control" placeholder="Year Min" value="">
+            </div>
+            <div class="input-box-dg">
+              <input type="text" id="year-max" class="form-control" placeholder="Year Max">
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-default" onclick="h1()">Update</button>
+          </div>
         </div>
-        <div id="1search-graph-container">
+
+        <div id="graph-ctn">
+        </div>
+        <br>
+        <div id="graph-ctn-a">
+        </div>
+        <br>
+        <div id="graph-ctn-b">
+        </div>
+        <br>
+        <div id="graph-ctn-c">
+        </div>
+        <br>
+        <br>
+        <div id="graph-ctn1">
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Pollution Queries -->
+<div id="team" class="text-center">
+    <div class="container">
+      <div class="section-title center">
+        <h2>Further Analysis</h2>
+        <hr>
+      </div>
+      <div id="row">
+        <div class ="query1">
+          <h4>Which city had the maximum amount of SO2 pollution during the year 2016?</h4>
+          <h5 id="q1"></h5>
+          <br>
+        </div>
+        <div class = "query2">
+          <h4>What was the average carbon monoxide value in Philadelphia during the year 2014?</h4>
+          <h5 id="q2"></h5>
+          <br>
+        </div>
+        <div class = "query3">
+          <h4>What was the maximum NO2 value in Denver on March 12th, 2014?</h4>
+          <h5 id="q3"></h5>
+          <br>
+        </div>
+        <div class = "query4">
+          <h4>Which city has the highest mean value of any pollutant?</h4>
+          <h5 id="q4"></h5>
+          <br>
+        </div>
+        <div class = "query5">
+          <h4>In March 2014, Miami, which of the pollutants had the highest presence?</h4>
+          <h5 id="q5"></h5>
+          <br>
+        </div>
+      </div>
+        
+      </div>
+    </div>   
 <!-- Footer -->
 <div id="footer">
     <div class="container">
       <p>Spring 2018 | COP 5725 - Database Management Systems | Group 31: Christopher Dixon, Daksh Gautam, Christopher Kodadek, Manika Monga</p>
     </div>
   </div>
+  
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script type="text/javascript" src="js/jquery.1.11.1.js"></script>
@@ -126,10 +191,9 @@
   <!-- Javascripts
     ================================================== -->
   <script type="text/javascript" src="js/main1.js"></script>
-  <script src="js/artyom.min.js"></script>
   <script src="js/highcharts/Highcharts-6.1.0/code/highcharts.js"></script>
 
-  <script src="js/speak.js"></script>
+  <script type="text/javascript" src="js/pollution.js"></script>
 
 </body>
 

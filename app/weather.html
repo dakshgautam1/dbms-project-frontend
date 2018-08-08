@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Earth in Numbers</title>
+<title>The US In Numbers</title>
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -14,6 +14,7 @@
 <!-- Stylesheet
     ================================================== -->
 <link rel="stylesheet" type="text/css"  href="css/style-weather.css">
+<link rel="stylesheet" type="text/css"  href="css/styles.css">
 
   <link rel="stylesheet" type="text/css" href="css/prettyPhoto.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
@@ -31,29 +32,31 @@
   <div id="status"> <img src="images/preloader.gif" height="64" width="64" alt=""> </div>
 </div>
 <!-- Navigation -->
+<!-- Navigation -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse"> <i class="fa fa-bars"></i> </button>
-      <a class="navbar-brand page-scroll" href="#page-top"> <i class="fa fa-paper-plane-o"></i> Earth in Numbers</a> </div>
-    
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-      <ul class="nav navbar-nav">
-        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-        <li class="hidden"> <a href="#page-top"></a> </li>
-        <li> <a class="page-scroll" href="#about">About</a> </li>
-        <li> <a class="page-scroll" href="#services">Services</a> </li>
-        <li> <a class="page-scroll" href="#works">Portfolio</a> </li>
-        <li> <a class="page-scroll" href="#team">Team</a> </li>
-        <li> <a class="page-scroll" href="#testimonials">Testimonials</a> </li>
-        <li> <a class="page-scroll" href="#contact">Contact</a> </li>
-      </ul>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse"> <i class="fa fa-bars"></i> </button>
+        <a class="navbar-brand page-scroll" href="index.html"> <i class="fa fa-paper-plane-o"></i> The US in Numbers</a> </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+        <ul class="nav navbar-nav">
+          <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+          <li class="hidden"> <a href="#page-top"></a> </li>
+          <li> <a class="page-scroll" href="index.html">Home</a> </li>
+          <li> <a class="page-scroll" href="weather.html">Weather</a> </li>
+          <li> <a class="page-scroll" href="pollution.html">Pollution</a> </li>
+          <li> <a class="page-scroll" href="events.html">Wildfires</a> </li>
+          <li> <a class="page-scroll" href="speak.html">Speak</a> </li>
+          <li> <a class="page-scroll" href="http://localhost:3002/">Admin</a> </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse --> 
     </div>
-    <!-- /.navbar-collapse --> 
-  </div>
-  <!-- /.container --> 
-</nav>
+    <!-- /.container --> 
+  </nav>
+  
 
 <!-- Header -->
 <div id="intro">
@@ -71,107 +74,118 @@
 </div>
 <!-- Input Section -->
 <div id="about">
-  <div class="container">
-    <div class="section-title text-center center">
-      <h2>Specify Data</h2>
-      <hr>
-    </div>
-
-    <div class="weather-input-data">
-      <div class="user-input">
-        <div class="about-text">
-          <h4>What would you like to know?</h4>
-          <p>Use this form to enter specifics about the information you are interested in. Indicate which city you would like to explore, or provide two if you would like to compare them. In addition, specify a date range from which data will be gathered. </p>
-        </div>
+    <div class="container">
+      <div class="section-title text-center center">
+        <h2>Graphs</h2>
+        <hr>
       </div>
-      <div class="user-input">
+      <div class="row">
+        <div class="input-box-wrapper">
+          <div class="dropdown-ctn-weather">
+            <div class="input-box-dg">
+                <select onchange="set_city1(this.value)">
+                    <option value="Denver">Denver</option>
+                    <option value="St. Louis">St. Louis</option>
+                    <option value="Portland">Portland</option>
+                    <option value="Dallas">Dallas</option>
+                    <option value="Pittsburgh">Pittsburgh</option>
+                    <option value="New York" selected="selected"> New York</option>
+                    <option value="Philadelphia">Philadelphia</option>
+                    <option value="Los Angeles">Los Angeles</option>
+                    <option value="Phoenix">Phoenix</option>
+                    <option value="Boston">Boston</option>
+                    <option value="Charlotte">Charlotte</option>
+                    <option value="Houston">Houston</option>
+                  </select>
+            </div>
+            <div class="input-box-dg">
+                <select onchange="set_city2(this.value)">
+                    <option value="Denver">Denver</option>
+                    <option value="St. Louis">St. Louis</option>
+                    <option value="Portland">Portland</option>
+                    <option value="Dallas">Dallas</option>
+                    <option value="Pittsburgh">Pittsburgh</option>
+                    <option value="New York" selected="selected"> New York</option>
+                    <option value="Philadelphia">Philadelphia</option>
+                    <option value="Los Angeles">Los Angeles</option>
+                    <option value="Phoenix">Phoenix</option>
+                    <option value="Boston">Boston</option>
+                    <option value="Charlotte">Charlotte</option>
+                    <option value="Houston">Houston</option>
+                  </select>
+            </div>
 
-        <form name="user-input" id="input-form" action="/action_page.php">
-              <div class="form-group">
-                <div class="row">
-                  <h6>City</h6>
-                  <input type="text" id="input-city" class="form-control" placeholder="Boston, Chicago..." required="true">
-                </div>
-                <div class="row">
-                  <h6 id="date-min-text">Begin Date</h6>
-                  <input type="date" id="date-min" class="form-control" placeholder="Begin Date" required="true" max="2016-03-21" min="2012-10-02">
-                </div>
-                <div class="row">
-                  <h6 id="date-max-text">End Date</h6>
-                  <input type="date" id="date-max" class="form-control" placeholder="End Date" required="true" max="2016-03-21" min="2012-10-02">
-                </div>
-              </div>
-        </form>
-        <div class="row">
-          <h6> </h6>
-          <button id="toggle-input-date" type="btn-default" class="btn">Toggle Date Range</button>
+          </div>
+
+          <div class="input-box-ctn">
+              <div class="input-box-dg"><input type="text" id="input-date1" class="form-control" placeholder="Boston, Chicago..." value="02/28/2013"></div>
+              <div class="input-box-dg"><input type="text" id="input-date2" class="form-control" placeholder="Boston, Chicago..." value="02/28/2017"></div>              
+          </div>
+
+          <div>
+              <button class="btn btn-default" onclick="h1()">Update</button>
+            </div>
         </div>
-      </div>
-      <div class="user-input">
-        <a id="fetch-btn" href="#services" type="submit" class="btn btn-default page-scroll">Fetch Data</a>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Data Presentation Section -->
-
-<div id="services" class="text-center">
-  <div class="container">
-    <div class="section-title center">
-
-    <!-- Text for this h2 should be the user input from above. -->
-      <h2 id="return-title"></h2>
-      <hr>
-      <h3 id="return-dates"></h3>
-    </div>
-    <div class="space"></div>
-
-      <div class="about-text" id="single-day">
-        <h1>Single Day Averages</h1>
-        
-        <div class="col-md-6">
-          <ul class="left">
-            <li class="text">Temperature: </li>
-            <li class="text">Humidity: </li>
-            <li class="text">Air Pressure: </li>
-            <li class="text">Wind Speed: </li>
-            <li class="text">Wind Direction: </li>
-          </ul>
-        </div>
-        <div class="col-md-5">
-          <ul class="right">
-            <li id="temp_res" class="result"></li>
-            <li id="humi_res" class="result"></li>
-            <li id="pres_res" class="result"></li>
-            <li id="spee_res" class="result"></li>
-            <li id="dire_res" class="result"></li>
-          </ul>
-        </div>
-      </div>
-
-      <div id="first-chart" style="width:100%; height:300px;"></div>
-      <div>
-        <button class="btn btn-default" onclick="h1()">Update</button>
-        <input type="text" id="input-city1" class="form-control" placeholder="Boston, Chicago..." value="New York">
-        <input type="text" id="input-city2" class="form-control" placeholder="Boston, Chicago..." value="New York">
-        <input type="text" id="input-date1" class="form-control" placeholder="Boston, Chicago..." value="02/28/2013">
-        <input type="text" id="input-date2" class="form-control" placeholder="Boston, Chicago..." value="02/28/2017">
         <div id="weather-graph-ctn"></div>
+        <br>
         <div id="weather-graph-ctn-a"></div>
+        <br>
         <div id="weather-graph-ctn-b"></div>
+        <br>
         <div id="weather-graph-ctn-c"></div>
-
       </div>
-  </div>
+    </div>
 </div>
 
-<!-- Footer -->
-<div id="footer">
-  <div class="container">
-    <p>Copyright &copy; Modus. Designed by <a href="http://www.templatewire.com" rel="nofollow">TemplateWire</a></p>
-  </div>
+<!-- Weather Queries -->
+<div id="team" class="text-center">
+    <div class="container">
+      <div class="section-title center">
+        <h2>FURTHER ANALYSIS</h2>
+        <hr>
+      </div>
+      <div id="row">
+        <div class ="query1">
+          <h4>What is the average temperature of New York on 24th July, 2014?</h4>
+          <h5 id="q1"></h5>
+          <br>
+        </div>
+        <div class = "query2">
+          <h4>What is the maximum humidity for California in the year 2013?</h4>
+          <h5 id="q2"></h5>
+          <br>
+        </div>
+        <div class = "query3">
+          <h4>What was the average wind speed where latitude of cities ranges from 25 to 35 on June 29th, 2014?</h4>
+          <h5 id="q3"></h5>
+          <br>
+        </div>
+        <div class = "query4">
+          <h4>When was the daily ratio of pressure-to-average-O3 content in the city of Dallas highest in the year 2013?</h4>
+          <h5 id="q4"></h5>
+          <br>
+        </div>
+        <div class = "query5">
+          <h4>Which year between 2013-2017 was it the coldest, on average, in the city of Charlotte?</h4>
+          <h5 id="q5"></h5>
+          <br>
+        </div>
+        <div class = "query6">
+          <h4>Which city has the highest average temperature in the year 2015?</h4>
+          <h5 id="q6"></h5>
+          <br>
+        </div>
+      </div>
+        
+      </div>
 </div>
+
+<div id="footer">
+    <div class="container">
+      <p>Spring 2018 | COP 5725 - Database Management Systems | Group 31: Christopher Dixon, Daksh Gautam, Christopher Kodadek, Manika Monga</p>
+    </div>
+  </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 <script type="text/javascript" src="js/jquery.1.11.1.js"></script> 

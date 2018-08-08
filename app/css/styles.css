@@ -1,5 +1,9 @@
 body {
-  background-color: orange; }
+  background-color: #e75926; }
+
+.color-text {
+  font-weight: bolder;
+  font-size: 20px; }
 
 .main-ctn {
   font-size: 100px;
@@ -12,5 +16,59 @@ body {
 
 #speak-text-box {
   color: black;
-  height: 200px;
+  height: 100px;
   width: 300px; }
+
+.input-box-dg {
+  width: 250px;
+  padding-left: 20px; }
+
+.input-box-ctn {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px; }
+
+.input-box-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 25px; }
+  .input-box-wrapper .dropdown-ctn select {
+    width: 200px;
+    height: 40px; }
+  .input-box-wrapper .dropdown-ctn-weather {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 400px; }
+    .input-box-wrapper .dropdown-ctn-weather select {
+      width: 200px;
+      height: 40px; }
+
+.text-box-ctn {
+  padding-top: 100px; }
+
+.event-date-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-direction: center;
+  align-items: center;
+  padding: 20px; }
+  .event-date-picker select {
+    height: 30px;
+    width: 120px; }
+
+.date-picker-event {
+  width: 100px;
+  padding-left: 20px; }
+  .date-picker-event select {
+    width: 200px;
+    height: 40px; }
+
+#graph-ctn {
+  height: 1000px; }
